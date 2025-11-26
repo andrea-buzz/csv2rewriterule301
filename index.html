@@ -59,6 +59,9 @@
       </div>
     </div>
 
+    <!-- Import error summary -->
+    <div id="importErrors" class="mb-4 text-sm text-red-600"></div>
+
     <!-- Data Table (desktop) -->
     <div id="tableContainer" class="bg-white border border-gray-200 rounded shadow overflow-hidden">
       <table class="min-w-full divide-y divide-gray-200 hidden md:table">
@@ -86,14 +89,16 @@
     <div id="modalBackdrop" class="hidden fixed inset-0 bg-black bg-opacity-40 z-40 items-center justify-center">
       <div id="modal" class="bg-white rounded shadow-lg w-full max-w-2xl mx-auto p-6">
         <h3 class="text-lg font-medium mb-4" id="modalTitle">Add Row</h3>
-        <form id="rowForm" class="space-y-3">
+        <form id="rowForm" class="space-y-3" novalidate>
           <div>
             <label class="block text-sm font-medium text-gray-700">Origin URL</label>
-            <input id="originInput" type="url" class="mt-1 block w-full rounded border-gray-300 shadow-sm" placeholder="https://example.com/path" required />
+            <input id="originInput" type="url" aria-describedby="originError" class="mt-1 block w-full rounded border-gray-300 shadow-sm" placeholder="https://example.com/path" required />
+            <p id="originError" class="mt-1 text-sm text-red-600 hidden" role="alert"></p>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Destination URL</label>
-            <input id="destInput" type="url" class="mt-1 block w-full rounded border-gray-300 shadow-sm" placeholder="https://example.com/new-path" required />
+            <input id="destInput" type="url" aria-describedby="destError" class="mt-1 block w-full rounded border-gray-300 shadow-sm" placeholder="https://example.com/new-path" required />
+            <p id="destError" class="mt-1 text-sm text-red-600 hidden" role="alert"></p>
           </div>
           <div class="flex gap-3 items-center">
             <label class="text-sm font-medium text-gray-700">Status</label>
@@ -113,9 +118,12 @@
             </label>
           </div>
 
-          <div class="flex justify-end gap-2">
-            <button type="button" id="cancelModalBtn" class="px-4 py-2 rounded bg-gray-200">Cancel</button>
-            <button type="submit" id="saveRowBtn" class="px-4 py-2 rounded bg-indigo-600 text-white">Save</button>
+          <div class="flex justify-between items-center">
+            <div id="modalFormHint" class="text-xs text-gray-500">Inserisci URL validi (con o senza schema). Verrà aggiunto automaticamente https:// se mancante.</div>
+            <div class="flex justify-end gap-2">
+              <button type="button" id="cancelModalBtn" class="px-4 py-2 rounded bg-gray-200">Cancel</button>
+              <button type="submit" id="saveRowBtn" class="px-4 py-2 rounded bg-indigo-600 text-white">Save</button>
+            </div>
           </div>
         </form>
       </div>
