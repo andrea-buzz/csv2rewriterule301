@@ -279,7 +279,7 @@ function generateHtaccessRules(redirects) {
         else pattern = '^' + escapeForRegex(pattern) + '$';
       } else {
         // full match including possible query ignored (can't match query via RewriteRule),
-        pattern = '^' + escapeForRegex((originUrl.pathname || '').replace(/^\/, '')) + '$';
+        pattern = '^' + escapeForRegex((originUrl.pathname || '').replace(/^\//, '')) + '$';
       }
       // Destination
       const dest = r.url_dest;
