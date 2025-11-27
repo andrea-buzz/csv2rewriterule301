@@ -274,7 +274,7 @@ function generateHtaccessRules(redirects) {
       let pattern = originUrl.pathname || '/';
       if (r.pathname_only) {
         // remove leading slash
-        pattern = pattern.replace(/^\/, '');
+        pattern = pattern.replace(/^\//, '');
         if (pattern === '') pattern = '';
         else pattern = '^' + escapeForRegex(pattern) + '$';
       } else {
