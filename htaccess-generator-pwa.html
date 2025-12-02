@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Generatore di regole .htaccess per redirect URL">
+    <meta name="theme-color" content="#2563eb">
+    <title>Generatore RewriteRule .htaccess</title>
+    <link id="manifest-placeholder">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f9fafb; min-height: 100vh; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 2rem 1rem; }
+        .header { margin-bottom: 2rem; }
+        .title { font-size: 2rem; font-weight: bold; color: #2563eb; margin-bottom: 0.5rem; }
+        .subtitle { color: #6b7280; }
+        .help-section { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+        .help-section.hidden { display: none; }
+        .help-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; }
+        .help-list { list-style: none; }
+        .help-list li { margin-bottom: 0.5rem; font-size: 0.875rem; color: #374151; }
+        .help-list strong { font-weight: 600; }
+        .btn-group { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; }
+        .btn { padding: 0.5rem 1rem; border-radius: 0.5rem; border: none; cursor: pointer; font-size: 0.875rem; font-weight: 500; transition: all 0.2s; color: white; }
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-gray { background: #6b7280; }
+        .btn-blue { background: #2563eb; }
+        .btn-green { background: #16a34a; }
+        .btn-purple { background: #9333ea; }
+        .btn-indigo { background: #4f46e5; }
+        .btn-red { background: #dc2626; margin-left: auto; }
+        .stats { background: white; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1rem; margin-bottom: 1.5rem; }
+        .stats.hidden { display: none; }
+        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; text-align: center; }
+        .stat-value { font-size: 1.5rem; font-weight: bold; }
+        .stat-label { font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem; }
+        .stat-blue { color: #2563eb; }
+        .stat-green { color: #16a34a; }
+        .stat-yellow { color: #ca8a04; }
+        .stat-red { color: #dc2626; }
+        .stat-purple { color: #9333ea; }
+        .table-wrapper { background: white; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+        .table-container { max-height: 600px; overflow: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+        thead { background: #f3f4f6; position: sticky; top: 0; z-index: 10; }
+        th { padding: 0.5rem; text-align: left; font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb; }
+        td { padding: 0.5rem; border-bottom: 1px solid #f3f4f6; }
+        tr:hover { background: #f9fafb; }
+        .row-inactive { background: #f3f4f6; opacity: 0.6; }
+        .editable { cursor: text; padding: 4px; border: 1px solid transparent; border-radius: 0.25rem; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .editable:hover { border-color: #cbd5e1; background: #f8fafc; }
+        .editable:focus { outline: none; border-color: #2563eb; background: white; white-space: normal; }
+        .checkbox { width: 1rem; height: 1rem; cursor: pointer; }
+        .select { border: 1px solid #d1d5db; border-radius: 0.25rem; padding: 0.25rem 0.5rem; font-size: 0.75rem; }
+        .badge { display: inline-block; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 500; }
+        .badge-red { background: #fee2e2; color: #991b1b; }
+        .badge-yellow { background: #fef3c7; color: #92400e; }
+        .badge-purple { background: #f3e8ff; color: #6b21a8; }
+        .badge-green { color: #16a34a; }
+        .btn-delete { background: none; border: none; cursor: pointer; font-size: 1.25rem; color: #dc2626; }
+        .btn-delete:hover { color: #991b1b; }
+        .empty-state { padding: 2rem; text-align: center; color: #9ca3af; }
+        .link { color: #2563eb; text-decoration: underline; }
+        .link:hover { color: #1e40af; }
+        .text-center { text-align: center; }
+        .hidden { display: none; }
+        input[type="file"] { display: none; }
+        @media (max-width: 768px) {
+            .title { font-size: 1.5rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .btn-group { flex-direction: column; }
+            .btn-red { margin-left: 0; }
+            .container { padding: 1rem 0.5rem; }
+            th, td { padding: 0.25rem; font-size: 0.75rem; }
+            .editable { max-width: 150px; }
+            .md-show { display: none !important; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <header class="mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-600 mb-2">Generatore RewriteRule .htaccess</h1>
+            <p class="text-gray-600">Importa le tue URL e genera regole di redirect Apache perfette</p>
+        </header>
+
+        <div id="help-section" class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6 hidden">
+            <h2 class="text-xl font-semibold mb-3">Come funziona</h2>
+            <ul class="space-y-2 text-sm text-gray-700">
+                <li>• <strong>Importa CSV</strong>: File con 3 colonne (URL origine, URL destinazione, HTTP status opzionale)</li>
+                <li>• <strong>Validazione automatica</strong>: Le URL vengono verificate e pulite automaticamente</li>
+                <li>• <strong>Gestione duplicati</strong>: I duplicati vengono rilevati e disattivati</li>
+                <li>• <strong>Modifica inline</strong>: Clicca su qualsiasi cella per modificarla</li>
+                <li>• <strong>Generazione regole</strong>: Crea file .htaccess con RewriteRule e RewriteCond</li>
+                <li>• <strong>Funziona offline</strong>: Tutti i dati sono salvati nel browser</li>
+            </ul>
+            <a href="data:text/csv;charset=utf-8,URL%20Origine%2CURL%20Destinazione%2CHTTP%20Status%0Ahttps%3A%2F%2Fwww.example.com%2Fold-page.html%2Chttps%3A%2F%2Fwww.example.com%2Fnew-page.html%2C301%0Ahttps%3A%2F%2Fwww.example.com%2Fproducts%2F%2Chttps%3A%2F%2Fwww.example.com%2Fshop%2F%2C302" 
+               download="esempio.csv" 
+               class="link" style="display: inline-block; margin-top: 0.75rem; font-size: 0.875rem;">
+                📥 Scarica CSV di esempio
+            </a>
+        </div>
+
+        <div class="btn-group">
+            <button onclick="toggleHelp()" class="btn btn-gray">
+                ❓ Help
+            </button>
+            <label class="btn btn-blue">
+                📁 Importa CSV
+                <input type="file" accept=".csv" onchange="importCSV(event)">
+            </label>
+            <button onclick="addNewRow()" class="btn btn-green">
+                ➕ Nuova Riga
+            </button>
+            <button onclick="generateRules()" id="generate-btn" class="btn btn-purple hidden">
+                ⚙️ Genera RewriteRule
+            </button>
+            <button onclick="downloadRules()" id="download-btn" class="btn btn-indigo hidden">
+                💾 Scarica .htaccess
+            </button>
+            <button onclick="deleteAll()" class="btn btn-red">
+                🗑️ Elimina Tutto
+            </button>
+        </div>
+
+        <div id="stats" class="stats hidden">
+            <div class="stats-grid">
+                <div><div class="stat-value stat-blue" id="total-count">0</div><div class="stat-label">Totale</div></div>
+                <div><div class="stat-value stat-green" id="active-count">0</div><div class="stat-label">Attive</div></div>
+                <div><div class="stat-value stat-yellow" id="duplicate-count">0</div><div class="stat-label">Duplicate</div></div>
+                <div><div class="stat-value stat-red" id="malformed-count">0</div><div class="stat-label">Malformate</div></div>
+                <div><div class="stat-value stat-purple" id="loop-count">0</div><div class="stat-label">Loop</div></div>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <div class="table-container">
+                <table id="data-table">
+                    <thead>
+                        <tr>
+                            <th>Attiva</th>
+                            <th>URL Origine</th>
+                            <th>URL Destinazione</th>
+                            <th>Status</th>
+                            <th class="text-center hidden md-show">Path Only</th>
+                            <th class="text-center hidden md-show">QSD</th>
+                            <th class="text-center">Stato</th>
+                            <th class="text-center">Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <tr>
+                            <td colspan="8" class="empty-state">
+                                Importa un file CSV o aggiungi una nuova riga per iniziare
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create and inject manifest dynamically
+        const manifestData = {
+            "name": "Generatore RewriteRule .htaccess",
+            "short_name": "Htaccess Gen",
+            "description": "Generatore di regole .htaccess per redirect URL",
+            "start_url": "./",
+            "display": "standalone",
+            "background_color": "#ffffff",
+            "theme_color": "#2563eb",
+            "icons": [
+                {
+                    "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192'%3E%3Crect width='192' height='192' fill='%232563eb'/%3E%3Cpath d='M100 46l0 100M80 42l0 60'/%3E%3Ctext fill='%23ffffff' x='100' y='105' font-size='48' font-family='monospace' text-anchor='middle'%3E.ht%3C/text%3E%3Cpath d='M100 86l0 10'/%3E%3C/svg%3E",
+                    "type": "image/svg+xml",
+                    "sizes": "192x192"
+                }
+            ]
+        };
+        
+        const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
+        const manifestURL = URL.createObjectURL(manifestBlob);
+        const link = document.createElement('link');
+        link.rel = 'manifest';
+        link.href = manifestURL;
+        document.getElementById('manifest-placeholder').replaceWith(link);
+
+        let db;
+        const DB_NAME = 'htaccessDB';
+        const STORE_NAME = 'redirects';
+
+        // Initialize IndexedDB
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, 1);
+                
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    db = request.result;
+                    resolve(db);
+                };
+                
+                request.onupgradeneeded = (event) => {
+                    const db = event.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        const store = db.createObjectStore(STORE_NAME, { keyPath: 'unique_id' });
+                        store.createIndex('url_origin', 'url_origin', { unique: false });
+                        store.createIndex('active', 'active', { unique: false });
+                    }
+                };
+            });
+        }
+
+        // Generate unique ID
+        function generateUniqueId() {
+            const timestamp = Date.now();
+            const random = Math.random().toString(36).substr(2, 9);
+            return `${timestamp}-${random}`;
+        }
+
+        // Validate and clean URL
+        function cleanURL(url) {
+            try {
+                const cleaned = String(url).trim();
+                if (!cleaned) return null;
+                const urlObj = new URL(cleaned);
+                return urlObj.href;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        // Get pathname from URL
+        function getPathname(url) {
+            try {
+                const urlObj = new URL(url);
+                return urlObj.pathname + urlObj.search;
+            } catch (e) {
+                return '';
+            }
+        }
+
+        // Extract origin pattern for RewriteRule
+        function getRewritePattern(url) {
+            try {
+                const urlObj = new URL(url);
+                let pattern = urlObj.pathname.replace(/^\//, '');
+                if (pattern.endsWith('/')) {
+                    pattern += '?';
+                }
+                return pattern + '$';
+            } catch (e) {
+                return '';
+            }
+        }
+
+        // Get domain from URL
+        function getDomain(url) {
+            try {
+                return new URL(url).hostname;
+            } catch (e) {
+                return '';
+            }
+        }
+
+        // Save to IndexedDB
+        async function saveRecord(record) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([STORE_NAME], 'readwrite');
+                const store = transaction.objectStore(STORE_NAME);
+                const request = store.put(record);
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        // Get all records
+        async function getAllRecords() {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([STORE_NAME], 'readonly');
+                const store = transaction.objectStore(STORE_NAME);
+                const request = store.getAll();
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        // Delete record
+        async function deleteRecord(id) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([STORE_NAME], 'readwrite');
+                const store = transaction.objectStore(STORE_NAME);
+                const request = store.delete(id);
+                request.onsuccess = () => resolve();
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        // Check for duplicates and loops
+        async function validateRecords() {
+            const records = await getAllRecords();
+            const urlOriginMap = {};
+            const urlDestSet = new Set();
+            
+            // Build maps
+            records.forEach(record => {
+                if (!urlOriginMap[record.url_origin]) {
+                    urlOriginMap[record.url_origin] = [];
+                }
+                urlOriginMap[record.url_origin].push(record.unique_id);
+                urlDestSet.add(record.url_dest);
+            });
+            
+            // Check each record
+            for (const record of records) {
+                let needsUpdate = false;
+                
+                // Check for duplicates
+                const duplicates = urlOriginMap[record.url_origin];
+                if (duplicates && duplicates.length > 1) {
+                    record.duplicated = duplicates.filter(id => id !== record.unique_id);
+                    record.active = false;
+                    needsUpdate = true;
+                } else {
+                    record.duplicated = false;
+                }
+                
+                // Check for loops
+                if (urlDestSet.has(record.url_origin)) {
+                    record.active = false;
+                    needsUpdate = true;
+                }
+                
+                // Check malformed
+                if (!record.url_origin || !record.url_dest) {
+                    record.malformed = true;
+                    record.active = false;
+                    needsUpdate = true;
+                }
+                
+                if (needsUpdate) {
+                    await saveRecord(record);
+                }
+            }
+        }
+
+        // Import CSV
+        async function importCSV(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const text = await file.text();
+            const lines = text.split('\n').filter(line => line.trim());
+            
+            // Skip header if present
+            const startIndex = lines[0].toLowerCase().includes('url') ? 1 : 0;
+            
+            for (let i = startIndex; i < lines.length; i++) {
+                const parts = lines[i].split(',').map(p => p.trim().replace(/^["']|["']$/g, ''));
+                if (parts.length < 2) continue;
+                
+                const urlOrigin = cleanURL(parts[0]);
+                const urlDest = cleanURL(parts[1]);
+                const httpStatus = parts[2] && ['301', '302', '404', '403', '401', '200'].includes(parts[2]) ? parts[2] : '301';
+                
+                const record = {
+                    unique_id: generateUniqueId(),
+                    url_origin: urlOrigin,
+                    url_dest: urlDest,
+                    http_status: httpStatus,
+                    pathname_only: true,
+                    flag_qsd: false,
+                    active: true,
+                    duplicated: false,
+                    malformed: !urlOrigin || !urlDest,
+                    rewriterule: ''
+                };
+                
+                if (record.malformed) {
+                    record.active = false;
+                }
+                
+                await saveRecord(record);
+            }
+            
+            await validateRecords();
+            await renderTable();
+        }
+
+        // Render table
+        async function renderTable() {
+            const records = await getAllRecords();
+            const tbody = document.getElementById('table-body');
+            
+            if (records.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="empty-state">Nessun dato presente</td></tr>';
+                document.getElementById('stats').classList.add('hidden');
+                document.getElementById('generate-btn').classList.add('hidden');
+                return;
+            }
+            
+            document.getElementById('stats').classList.remove('hidden');
+            
+            // Calculate stats
+            const total = records.length;
+            const active = records.filter(r => r.active).length;
+            const duplicates = records.filter(r => r.duplicated && r.duplicated.length > 0).length;
+            const malformed = records.filter(r => r.malformed).length;
+            
+            // Check loops
+            const urlDestSet = new Set(records.map(r => r.url_dest));
+            const loops = records.filter(r => urlDestSet.has(r.url_origin)).length;
+            
+            document.getElementById('total-count').textContent = total;
+            document.getElementById('active-count').textContent = active;
+            document.getElementById('duplicate-count').textContent = duplicates;
+            document.getElementById('malformed-count').textContent = malformed;
+            document.getElementById('loop-count').textContent = loops;
+            
+            // Show generate button if there are active records
+            if (active > 0) {
+                document.getElementById('generate-btn').classList.remove('hidden');
+            } else {
+                document.getElementById('generate-btn').classList.add('hidden');
+            }
+            
+            tbody.innerHTML = records.map(record => {
+                const statusBadge = getStatusBadge(record);
+                const rowClass = !record.active ? 'row-inactive' : '';
+                
+                return `
+                    <tr class="${rowClass}" data-id="${record.unique_id}">
+                        <td>
+                            <input type="checkbox" ${record.active ? 'checked' : ''} 
+                                   onchange="toggleActive('${record.unique_id}')" 
+                                   ${record.malformed || (record.duplicated && record.duplicated.length > 0) ? 'disabled' : ''}
+                                   class="checkbox">
+                        </td>
+                        <td class="editable" 
+                            contenteditable="true" 
+                            data-field="url_origin"
+                            data-id="${record.unique_id}"
+                            onblur="updateField(this)">${record.url_origin || ''}</td>
+                        <td class="editable" 
+                            contenteditable="true" 
+                            data-field="url_dest"
+                            data-id="${record.unique_id}"
+                            onblur="updateField(this)">${record.url_dest || ''}</td>
+                        <td>
+                            <select onchange="updateStatus('${record.unique_id}', this.value)" class="select">
+                                ${['301', '302', '404', '403', '401', '200'].map(s => 
+                                    `<option value="${s}" ${record.http_status === s ? 'selected' : ''}>${s}</option>`
+                                ).join('')}
+                            </select>
+                        </td>
+                        <td class="text-center hidden md-show">
+                            <input type="checkbox" ${record.pathname_only ? 'checked' : ''} 
+                                   onchange="toggleField('${record.unique_id}', 'pathname_only')" 
+                                   class="checkbox">
+                        </td>
+                        <td class="text-center hidden md-show">
+                            <input type="checkbox" ${record.flag_qsd ? 'checked' : ''} 
+                                   onchange="toggleField('${record.unique_id}', 'flag_qsd')" 
+                                   class="checkbox">
+                        </td>
+                        <td class="text-center">${statusBadge}</td>
+                        <td class="text-center">
+                            <button onclick="deleteRow('${record.unique_id}')" class="btn-delete">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function getStatusBadge(record) {
+            const badges = [];
+            if (record.malformed) badges.push('<span class="badge badge-red">Malformata</span>');
+            if (record.duplicated && record.duplicated.length > 0) badges.push('<span class="badge badge-yellow">Duplicato</span>');
+            
+            const urlDestSet = new Set();
+            getAllRecords().then(records => {
+                records.forEach(r => urlDestSet.add(r.url_dest));
+                if (urlDestSet.has(record.url_origin)) {
+                    badges.push('<span class="badge badge-purple">Loop</span>');
+                }
+            });
+            
+            return badges.length > 0 ? badges.join(' ') : '<span class="badge-green">✓ OK</span>';
+        }
+
+        // Toggle active
+        async function toggleActive(id) {
+            const records = await getAllRecords();
+            const record = records.find(r => r.unique_id === id);
+            if (record) {
+                record.active = !record.active;
+                await saveRecord(record);
+                await renderTable();
+            }
+        }
+
+        // Toggle boolean fields
+        async function toggleField(id, field) {
+            const records = await getAllRecords();
+            const record = records.find(r => r.unique_id === id);
+            if (record) {
+                record[field] = !record[field];
+                await saveRecord(record);
+            }
+        }
+
+        // Update status
+        async function updateStatus(id, value) {
+            const records = await getAllRecords();
+            const record = records.find(r => r.unique_id === id);
+            if (record) {
+                record.http_status = value;
+                await saveRecord(record);
+            }
+        }
+
+        // Update field
+        async function updateField(element) {
+            const id = element.dataset.id;
+            const field = element.dataset.field;
+            const value = element.textContent.trim();
+            
+            const records = await getAllRecords();
+            const record = records.find(r => r.unique_id === id);
+            
+            if (record) {
+                const cleanedValue = cleanURL(value);
+                if (cleanedValue) {
+                    record[field] = cleanedValue;
+                    record.malformed = false;
+                    element.textContent = cleanedValue;
+                } else {
+                    record.malformed = true;
+                }
+                await saveRecord(record);
+                await validateRecords();
+                await renderTable();
+            }
+        }
+
+        // Add new row
+        async function addNewRow() {
+            const record = {
+                unique_id: generateUniqueId(),
+                url_origin: '',
+                url_dest: '',
+                http_status: '301',
+                pathname_only: true,
+                flag_qsd: false,
+                active: false,
+                duplicated: false,
+                malformed: true,
+                rewriterule: ''
+            };
+            await saveRecord(record);
+            await renderTable();
+        }
+
+        // Delete row
+        async function deleteRow(id) {
+            if (confirm('Eliminare questa riga?')) {
+                await deleteRecord(id);
+                await validateRecords();
+                await renderTable();
+            }
+        }
+
+        // Delete all
+        async function deleteAll() {
+            if (confirm('Eliminare tutti i dati? Questa operazione non può essere annullata.')) {
+                const records = await getAllRecords();
+                for (const record of records) {
+                    await deleteRecord(record.unique_id);
+                }
+                await renderTable();
+                document.getElementById('download-btn').classList.add('hidden');
+            }
+        }
+
+        // Generate RewriteRules
+        async function generateRules() {
+            const records = await getAllRecords();
+            const activeRecords = records.filter(r => r.active);
+            
+            // Group by domain
+            const domainGroups = {};
+            activeRecords.forEach(record => {
+                const domain = getDomain(record.url_origin);
+                if (!domainGroups[domain]) {
+                    domainGroups[domain] = [];
+                }
+                domainGroups[domain].push(record);
+            });
+            
+            // Generate rules for each record
+            for (const record of activeRecords) {
+                const pattern = getRewritePattern(record.url_origin);
+                let destination = record.pathname_only ? getPathname(record.url_dest) : record.url_dest;
+                
+                const flags = ['R=' + record.http_status];
+                if (record.flag_qsd) flags.push('QSD');
+                flags.push('L');
+                
+                record.rewriterule = `RewriteRule ^${pattern} ${destination} [${flags.join(',')}]`;
+                await saveRecord(record);
+            }
+            
+            document.getElementById('download-btn').classList.remove('hidden');
+            alert('Regole generate con successo!');
+        }
+
+        // Download rules
+        async function downloadRules() {
+            const records = await getAllRecords();
+            const activeRecords = records.filter(r => r.active && r.rewriterule);
+            
+            // Group by domain
+            const domainGroups = {};
+            activeRecords.forEach(record => {
+                const domain = getDomain(record.url_origin);
+                if (!domainGroups[domain]) {
+                    domainGroups[domain] = [];
+                }
+                domainGroups[domain].push(record);
+            });
+            
+            let output = '# Generated by .htaccess RewriteRule Generator\n';
+            output += '# ' + new Date().toISOString() + '\n\n';
+            
+            // Generate rules grouped by domain
+            for (const [domain, records] of Object.entries(domainGroups)) {
+                output += `# URL del dominio ${domain}\n`;
+                output += `RewriteCond %{HTTP_HOST} ^${domain.replace(/\./g, '\\.')}$ [NC]\n`;
+                records.forEach(record => {
+                    const comment = record.pathname_only ? ' # pathname_only' : '';
+                    const qsdComment = record.flag_qsd ? ' # flag_qsd' : '';
+                    output += record.rewriterule + comment + qsdComment + '\n';
+                });
+                output += '\n';
+            }
+            
+            const blob = new Blob([output], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'htaccess-rules.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Toggle help
+        function toggleHelp() {
+            document.getElementById('help-section').classList.toggle('hidden');
+        }
+
+        // Initialize app
+        initDB().then(() => {
+            renderTable();
+        });
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                self.addEventListener('install', (e) => {
+                    e.waitUntil(
+                        caches.open('htaccess-v1').then((cache) => {
+                            return cache.addAll(['/']);
+                        })
+                    );
+                });
+                self.addEventListener('fetch', (e) => {
+                    e.respondWith(
+                        caches.match(e.request).then((response) => {
+                            return response || fetch(e.request);
+                        })
+                    );
+                });
+            `;
+            const blob = new Blob([swCode], { type: 'application/javascript' });
+            const swUrl = URL.createObjectURL(blob);
+            navigator.serviceWorker.register(swUrl);
+        }
+    </script>
+</body>
+</html>
