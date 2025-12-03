@@ -554,9 +554,7 @@
                 output += `# URL del dominio ${domain}\n`;
                 output += `RewriteCond %{HTTP_HOST} ^${domain.replace(/\./g, '\\.')}$ [NC]\n`;
                 records.forEach(record => {
-                    const comment = record.pathname_only ? ' # pathname_only' : '';
-                    const qsdComment = record.flag_qsd ? ' # flag_qsd' : '';
-                    output += record.rewriterule + comment + qsdComment + '\n';
+                    output += record.rewriterule + '\n';
                 });
                 output += '\n';
             }
