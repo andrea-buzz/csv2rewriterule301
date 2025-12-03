@@ -323,6 +323,7 @@
                     record.active = false;
                     needsUpdate = true;
                 } else {
+                    if(Array.isArray(record.duplicated)) needsUpdate = true;
                     record.duplicated = false;
                 }
                 
